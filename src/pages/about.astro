@@ -1,4 +1,6 @@
 ---
+import Footer from '../components/Footer.astro'
+import Navigation from '../components/Navigation.astro'
 import '../styles/global.css'
 
 const pageTitle = "About Me";
@@ -34,10 +36,7 @@ const skillColor = "crimson";
 		</style>
 	</head>
 	<body>
-        <a href="/">Home</a>
-        <a href="/about">About</a>
-        <a href="/blog">Blog</a>
-        <a href="/log">Log</a>
+        <Navigation />
 
 		<h1>{pageTitle}</h1>
         <h2>... and my site for graphics learning!</h2>
@@ -57,5 +56,6 @@ const skillColor = "crimson";
 		<ul>
 			{skills.map((skill) => <li class="skill">{skill}</li>)}
 		</ul>
+		<Footer />
 	</body>
 </html>
