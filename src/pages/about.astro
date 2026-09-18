@@ -1,5 +1,14 @@
 ---
-
+const pageTitle = "About Me";
+const identity = {
+	firstName: "Haoran",
+	firstNameCHS: "浩然",
+	country: "China",
+	location: "Los Angeles",
+	hobbies: ["PC games", "cycling"],
+	languages: ["Chinese Mandarin", "English", "German", "Japanese", "Latin"]
+};
+const skills = ["C++", "Python"]
 ---
 
 <html lang="en">
@@ -9,7 +18,7 @@
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<title>{pageTitle}</title>
 	</head>
 	<body>
         <a href="/">Home</a>
@@ -17,9 +26,23 @@
         <a href="/blog">Blog</a>
         <a href="/log">Log</a>
 
-		<h1>About Me</h1>
+		<h1>{pageTitle}</h1>
         <h2>... and my site for graphics learning!</h2>
 
         <p>I am a CS student in USC. I am recently working on fluid simulation as well as rendering techniques. So this website would be my playground for graphics demos and math behind them.</p>
+
+		<p>Here are some facts about me:</p>
+		<ul>
+			<li>My name is {identity.firstName} ({identity.firstNameCHS}).</li>
+			<li>I am from {identity.country} and currently live in {identity.location}.</li>
+			{identity.hobbies.length >= 2 && // conditionally render
+				<li>Two of my hobbies are: {identity.hobbies[0]} and {identity.hobbies[1]}.</li>
+			}
+			<li>I can speak and have learned several languages: {identity.languages.join(', ')}.</li>
+		</ul>
+		<p>My skills include:</p>
+		<ul>
+			{skills.map((skill) => <li>{skill}</li>)}
+		</ul>
 	</body>
 </html>
