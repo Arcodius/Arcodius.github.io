@@ -1,4 +1,5 @@
 ---
+layout: ../../layouts/MarkdownPostLayout.astro
 title: 'First Blog Post'
 pubDate: 09-17-2026
 description: 'First post.'
@@ -8,10 +9,6 @@ image:
     alt: 'The Astro logo on a dark background with a pink glow.'
 tags: ['blogging']
 ---
-
-# First Blog Post
-
-Published on: 2026-09-17
 
 Today I launched my first blog website. Here I would keep track of my learning process of fluid simulation and rendering, along with some math.
 
