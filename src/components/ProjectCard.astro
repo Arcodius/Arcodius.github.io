@@ -1,0 +1,42 @@
+---
+interface Props {
+  project: {
+    id: string;
+    data: {
+      title: string;
+      summary: string;
+      year: number;
+      tags: string[];
+      cover: string;
+      coverAlt: string;
+      status: 'completed' | 'in-progress' | 'archived';
+    };
+  };
+  index?: number;
+}
+
+const { project, index = 0 } = Astro.props;
+const statusLabels = {
+  completed: 'Completed',
+  'in-progress': 'In progress',
+  archived: 'Archived',
+};
+---
+
+<article class="project-card">
+  <a class="project-cover" href={`/demo/${project.id}/`} aria-label={`View project: ${project.data.title}`}>
+    <img src={project.data.cover} alt={project.data.coverAlt} loading="lazy" />
+    <span class="project-number">{String(index + 1).padStart(2, '0')}</span>
+  </a>
+  <div class="project-body">
+    <div class="project-meta">
+      <span>{project.data.year}</span>
+      <span>{statusLabels[project.data.status]}</span>
+    </div>
+    <h3><a href={`/demo/${project.id}/`}>{project.data.title}</a></h3>
+    <p>{project.data.summary}</p>
+    <ul class="tag-list" aria-label="Technology tags">
+      {project.data.tags.map((tag) => <li>{tag}</li>)}
+    </ul>
+  </div>
+</article>

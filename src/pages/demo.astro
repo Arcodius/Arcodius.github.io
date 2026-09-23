@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => b.data.year - a.data.year);
+---
+
+<BaseLayout title="Demo" description="A selection of graphics, fluid simulation, and rendering projects.">
+  <header class="page-intro">
+    <p class="eyebrow">Projects / Experiments</p>
+    <h1>Demo</h1>
+    <p>An archive of completed and ongoing experiments. Each project documents its process, technical tradeoffs, and visual results whenever possible.</p>
+  </header>
+
+  <div class="filter-line">
+    <span class="filter-label">ARCHIVE / {String(projects.length).padStart(2, '0')}</span>
+    <span>Graphics · Simulation · Rendering</span>
+  </div>
+
+  <div class="project-grid project-grid-archive">
+    {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+  </div>
+</BaseLayout>

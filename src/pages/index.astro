@@ -1,8 +1,69 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-const pageTitle = "Home Page";
+import ProjectCard from '../components/ProjectCard.astro';
+import PostList from '../components/PostList.astro';
+import { site } from '../data/site';
+
+const projects = (await getCollection('projects'))
+  .filter((project) => project.data.featured)
+  .sort((a, b) => b.data.year - a.data.year)
+  .slice(0, 2);
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-	<h2> A secret Acadia</h2>
+<BaseLayout>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="eyebrow">Portfolio / Notes / Experiments</p>
+      <h1 id="hero-title">
+        <span>Hello, I am</span>
+        Aaron Zhang<span class="hero-dot">.</span>
+      </h1>
+      <p class="hero-intro">{site.description}</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/demo">View projects <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/about">More about me <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+
+    <figure class="portrait-block">
+      <div class="portrait-frame">
+        <img src={site.portrait} alt={`Portrait placeholder for ${site.name}`} />
+      </div>
+      <figcaption>
+        <span>{site.chineseName}</span>
+        <span>{site.location}</span>
+      </figcaption>
+    </figure>
+
+    <div class="hero-shape" aria-hidden="true"></div>
+  </section>
+
+  <section class="home-section" aria-labelledby="selected-work">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">01 / Selected work</p>
+        <h2 id="selected-work">Selected work</h2>
+      </div>
+      <a class="text-link" href="/demo">All projects <span aria-hidden="true">→</span></a>
+    </div>
+    <div class="project-grid">
+      {projects.map((project, index) => <ProjectCard project={project} index={index} />)}
+    </div>
+  </section>
+
+  <section class="home-section journal-section" aria-labelledby="latest-writing">
+    <div class="section-heading">
+      <div>
+        <p class="eyebrow">02 / Latest writing</p>
+        <h2 id="latest-writing">Latest writing</h2>
+      </div>
+      <a class="text-link" href="/blog">All articles <span aria-hidden="true">→</span></a>
+    </div>
+    <PostList posts={posts} limit={3} />
+  </section>
 </BaseLayout>

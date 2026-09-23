@@ -1,0 +1,30 @@
+---
+import { site } from '../data/site';
+
+const pathname = Astro.url.pathname;
+const links = [
+  { href: '/', label: 'Home', match: '/' },
+  { href: '/demo', label: 'Demo', match: '/demo' },
+  { href: '/blog', label: 'Blog', match: '/blog' },
+  { href: '/about', label: 'About', match: '/about' },
+];
+---
+
+<header class="site-header">
+  <a class="wordmark" href="/" aria-label={`${site.name} home`}>
+    <span class="wordmark-mark" aria-hidden="true"></span>
+    <span>{site.name}</span>
+  </a>
+
+  <nav aria-label="Primary navigation">
+    {links.map((link, index) => {
+      const isActive = link.match === '/' ? pathname === '/' : pathname.startsWith(link.match);
+      return (
+        <a href={link.href} aria-current={isActive ? 'page' : undefined}>
+          <span class="nav-index">0{index + 1}</span>
+          {link.label}
+        </a>
+      );
+    })}
+  </nav>
+</header>

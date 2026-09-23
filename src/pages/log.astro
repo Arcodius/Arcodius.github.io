@@ -1,9 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const pageTitle = "Technical Logs";
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-	<p>09/17/2026 I typed the first line of my website!</p>
-	<p>09/18/2026 Learning some style stuff.</p>
+<BaseLayout title="Technical Log">
+  <header class="page-intro">
+    <p class="eyebrow">Archive / Log</p>
+    <h1>Technical Log</h1>
+    <p>A brief development log for this website.</p>
+  </header>
+  <ol class="timeline">
+    <li><time datetime="2026-09-18">2026.09.18</time><span>Learning the foundations of web styling.</span></li>
+    <li><time datetime="2026-09-17">2026.09.17</time><span>I typed the first line of my website.</span></li>
+  </ol>
 </BaseLayout>

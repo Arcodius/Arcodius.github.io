@@ -1,13 +1,27 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
 
-const pageTitle = "My Blogs";
+const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-	<p>This is where I post my demos and math notes.</p>
-	<ul>
-		<li><a href="/posts/post-1">Post 1</a></li>
-		<li><a href="/posts/fluid-basic">Basic Incompressible Non-Viscous 2D Fluid Simulation</a></li>
-	</ul>
+<BaseLayout title="Blog" description="Notes on computer graphics, fluid simulation, rendering, and mathematics.">
+  <header class="page-intro">
+    <p class="eyebrow">Notes / Process / Ideas</p>
+    <h1>Blog</h1>
+    <p>Notes on the problems I encounter in graphics, simulation, and rendering. These are not definitive tutorials, but evolving records of experiments and ideas.</p>
+  </header>
+
+  <div class="filter-line" aria-label="Article tags">
+    <span class="filter-label">INDEX / {String(posts.length).padStart(2, '0')}</span>
+    <ul class="tag-list">
+      {tags.map((tag) => <li>{tag}</li>)}
+    </ul>
+  </div>
+
+  <PostList posts={posts} />
 </BaseLayout>

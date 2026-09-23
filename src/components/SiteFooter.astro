@@ -1,0 +1,18 @@
+---
+import { site } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div>
+    <p class="footer-title">{site.name} / {site.chineseName}</p>
+    <p>{site.role}</p>
+  </div>
+  <div class="footer-links">
+    {site.socials.map((social) => (
+      <a href={social.href} rel="me noreferrer" target="_blank">{social.label} ↗</a>
+    ))}
+  </div>
+  <p class="footer-meta">© {year} · Built as static HTML</p>
+</footer>
+

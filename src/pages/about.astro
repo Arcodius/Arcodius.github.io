@@ -1,45 +1,41 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
 
-const pageTitle = "About Me";
-const identity = {
-	firstName: "Haoran",
-	firstNameCHS: "浩然",
-	country: "China",
-	location: "Los Angeles",
-	hobbies: ["PC games", "cycling"],
-	languages: ["Chinese Mandarin", "English", "German", "Japanese", "Latin"]
-};
-const skills = ["C++", "Python"];
-const skillColor = "crimson";
+const skills = ['C++', 'Python', 'OpenGL', 'Numerical Methods'];
+const interests = ['Fluid Simulation', 'Rendering', 'Applied Mathematics', 'Cycling'];
 ---
 
-<BaseLayout pageTitle={pageTitle}>
-	<style define:vars={{skillColor}}>
-		h1 {
-			color: purple;
-			font-size: 4rem;
-		}
-		.skill {
-			color: var(--skillColor);
-			font-weight: bold;
-		}
-	</style>
-	<h2>... and my site for graphics learning!</h2>
-	<p>I am a CS student in USC. I am recently working on fluid simulation as well as rendering techniques. So this website would be my playground for graphics demos and math behind them.</p>
+<BaseLayout title="About" description={`Profile, skills, and research interests of ${site.name}.`}>
+  <header class="page-intro about-intro">
+    <p class="eyebrow">About / Profile</p>
+    <h1>Making interesting things<br />between math and pixels.</h1>
+  </header>
 
-	<p>Here are some facts about me:</p>
-	<ul>
-		<li>My name is {identity.firstName} ({identity.firstNameCHS}).</li>
-		<li>I am from {identity.country} and currently live in {identity.location}.</li>
-		{identity.hobbies.length >= 2 && // conditionally render
-			<li>Two of my hobbies are: {identity.hobbies[0]} and {identity.hobbies[1]}.</li>
-		}
-		<li>I can speak and have learned several languages: {identity.languages.join(', ')}.</li>
-	</ul>
-	<p>My skills include:</p>
-	<ul>
-		{skills.map((skill) => <li class="skill">{skill}</li>)}
-	</ul>
+  <section class="about-grid">
+    <figure class="about-portrait">
+      <img src={site.portrait} alt={`Portrait placeholder for ${site.name}`} />
+      <figcaption>{site.name} / {site.chineseName}</figcaption>
+    </figure>
+
+    <div class="about-copy prose">
+      <p>I am a computer science student from China, currently based in Los Angeles. My recent work focuses on fluid simulation and rendering techniques, supported by a growing foundation in applied mathematics.</p>
+      <p>This website is my digital workbench: one part project archive, one part record of the ideas and decisions behind each implementation. Away from code, I enjoy PC games, cycling, and learning languages.</p>
+
+      <div class="about-lists">
+        <div>
+          <h2>Toolkit</h2>
+          <ul>{skills.map((skill) => <li>{skill}</li>)}</ul>
+        </div>
+        <div>
+          <h2>Interests</h2>
+          <ul>{interests.map((interest) => <li>{interest}</li>)}</ul>
+        </div>
+      </div>
+
+      <a class="button button-primary" href={`mailto:${site.email}`}>Get in touch <span aria-hidden="true">↗</span></a>
+      <p class="small-note">Replace the sample email in <code>src/data/site.ts</code> before publishing.</p>
+    </div>
+  </section>
 </BaseLayout>
 
