@@ -1,4 +1,5 @@
 ---
+import ArrowUpRight from './ArrowUpRight.astro';
 import { site } from '../data/site';
 const year = new Date().getFullYear();
 ---
@@ -10,9 +11,10 @@ const year = new Date().getFullYear();
   </div>
   <div class="footer-links">
     {site.socials.map((social) => (
-      <a href={social.href} rel="me noreferrer" target="_blank">{social.label} ↗</a>
+      <a href={social.href} rel="me noreferrer" target="_blank">
+        {social.label} <ArrowUpRight />
+      </a>
     ))}
   </div>
   <p class="footer-meta">© {year} · Built as static HTML</p>
 </footer>
-

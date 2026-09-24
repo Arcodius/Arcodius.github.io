@@ -1,4 +1,6 @@
 ---
+import ArrowUpRight from './ArrowUpRight.astro';
+
 interface Props {
   posts: Array<{
     id: string;
@@ -32,7 +34,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
           <span>{post.data.description}</span>
         </span>
         <span class="post-date">{dateFormatter.format(post.data.pubDate)}</span>
-        <span class="post-arrow" aria-hidden="true">↗</span>
+        <ArrowUpRight class="post-arrow" />
       </a>
     </li>
   ))}

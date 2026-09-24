@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ContentLayout from '../../layouts/ContentLayout.astro';
+import ArrowUpRight from '../../components/ArrowUpRight.astro';
 import { formatProjectPeriod } from '../../utils/projects';
 
 export async function getStaticPaths() {
@@ -25,7 +26,9 @@ const projectPeriod = formatProjectPeriod(project.data);
 >
   {project.data.links.length > 0 && (
     <div class="project-links">
-      {project.data.links.map((link) => <a class="button" href={link.href}>{link.label} ↗</a>)}
+      {project.data.links.map((link) => (
+        <a class="button" href={link.href}>{link.label} <ArrowUpRight /></a>
+      ))}
     </div>
   )}
   <Content />
