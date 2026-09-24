@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ContentLayout from '../../layouts/ContentLayout.astro';
+import { formatProjectPeriod } from '../../utils/projects';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -9,6 +10,7 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
+const projectPeriod = formatProjectPeriod(project.data);
 ---
 
 <ContentLayout
@@ -17,6 +19,7 @@ const { Content } = await render(project);
   eyebrow="Case study / Demo"
   tags={project.data.tags}
   year={project.data.year}
+  period={projectPeriod}
   cover={project.data.cover}
   coverAlt={project.data.coverAlt}
 >

@@ -1,12 +1,13 @@
 export const site = {
   name: 'Aaron Zhang',
   chineseName: '张浩然',
-  role: 'Computer Graphics · Simulation · Rendering',
+  role: 'Rendering · Simulation · Graphics Systems',
   description:
-    'I am a computer graphics student based in Los Angeles, exploring fluid simulation, rendering, and the mathematics behind them.',
-  email: 'haoranz9@usc.edu',
+    'I am a graphics engineer and computer science graduate student based in Los Angeles, focused on real-time rendering, physical simulation, and performance.',
+  email: 'tiracolate@gmail.com',
   location: 'Los Angeles, CA',
-  portrait: '/images/avatar.png',
+  portrait1: '/images/avatar1.jpg',
+  portrait2: '/images/avatar2.png',
   socials: [
     { label: 'GitHub', href: 'https://github.com/Arcodius' },
     { label: 'Instagram', href: 'https://www.instagram.com/tiratico' },

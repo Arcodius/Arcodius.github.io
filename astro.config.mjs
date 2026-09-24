@@ -5,8 +5,7 @@ import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 
 export default defineConfig({
-    // 发布前可在这里加入 site: 'https://your-domain.com'
-    // 用于生成 canonical 和社交分享图片的绝对链接。
+    site: 'https://arcodius.github.io',
     redirects: {
         '/posts/post-1': '/blog/first-post/',
         '/posts/fluid-basic': '/blog/fluid-basic/',

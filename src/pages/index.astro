@@ -4,10 +4,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
 import PostList from '../components/PostList.astro';
 import { site } from '../data/site';
+import { getProjectTimestamp } from '../utils/projects';
 
 const projects = (await getCollection('projects'))
   .filter((project) => project.data.featured)
-  .sort((a, b) => b.data.year - a.data.year)
+  .sort((a, b) => getProjectTimestamp(b.data) - getProjectTimestamp(a.data))
   .slice(0, 2);
 
 const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
@@ -32,7 +33,7 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
 
     <figure class="portrait-block">
       <div class="portrait-frame">
-        <img src={site.portrait} alt={`Portrait placeholder for ${site.name}`} />
+        <img src={site.portrait1} alt={`Portrait of ${site.name}`} />
       </div>
       <figcaption>
         <span>{site.chineseName}</span>

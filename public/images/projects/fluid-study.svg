@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Abstract fluid study</title>
+  <desc id="desc">Blue streamlines move around a red circular obstacle on an off-white grid.</desc>
+  <rect width="1200" height="760" fill="#d9d5ca"/>
+  <g stroke="#b9b4a7" stroke-width="1">
+    <path d="M0 95h1200M0 190h1200M0 285h1200M0 380h1200M0 475h1200M0 570h1200M0 665h1200"/>
+    <path d="M150 0v760M300 0v760M450 0v760M600 0v760M750 0v760M900 0v760M1050 0v760"/>
+  </g>
+  <g fill="none" stroke="#244fc6" stroke-width="14">
+    <path d="M-60 130C310 90 422 116 530 240S800 302 1260 190"/>
+    <path d="M-60 282C275 250 350 275 473 342S810 400 1260 300"/>
+    <path d="M-60 450C360 406 423 456 529 550S892 600 1260 430"/>
+    <path d="M-60 620C290 660 470 656 604 578S880 497 1260 570"/>
+  </g>
+  <circle cx="620" cy="378" r="128" fill="#e5422b" stroke="#151515" stroke-width="14"/>
+  <path d="M78 62h210v64H78z" fill="#151515"/>
+  <text x="105" y="105" fill="#f2f0e8" font-family="Arial, sans-serif" font-size="27" font-weight="700" letter-spacing="4">FLUID / 01</text>
+</svg>
+

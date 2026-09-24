@@ -22,6 +22,8 @@ const projects = defineCollection({
     title: z.string(),
     summary: z.string(),
     year: z.number(),
+    startDate: z.coerce.date().optional(),
+    endDate: z.coerce.date().optional(),
     status: z.enum(['completed', 'in-progress', 'archived']).default('completed'),
     tags: z.array(z.string()).default([]),
     cover: z.string(),
@@ -39,4 +41,3 @@ const projects = defineCollection({
 });
 
 export const collections = { blog, projects };
-

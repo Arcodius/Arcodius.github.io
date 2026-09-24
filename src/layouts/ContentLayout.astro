@@ -10,9 +10,10 @@ interface Props {
   cover?: string;
   coverAlt?: string;
   year?: number;
+  period?: string;
 }
 
-const { title, description, date, eyebrow, tags = [], cover, coverAlt = '', year } = Astro.props;
+const { title, description, date, eyebrow, tags = [], cover, coverAlt = '', year, period } = Astro.props;
 const dateFormatter = new Intl.DateTimeFormat('en-US', {
   year: 'numeric',
   month: 'long',
@@ -29,7 +30,7 @@ const dateFormatter = new Intl.DateTimeFormat('en-US', {
       <p class="content-deck">{description}</p>
       <div class="content-byline">
         {date && <time datetime={date.toISOString()}>{dateFormatter.format(date)}</time>}
-        {year && <span>{year}</span>}
+        {period ? <span>{period}</span> : year && <span>{year}</span>}
         {tags.length > 0 && <span>{tags.join(' · ')}</span>}
       </div>
     </header>

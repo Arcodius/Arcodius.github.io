@@ -2,40 +2,226 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { site } from '../data/site';
 
-const skills = ['C++', 'Python', 'OpenGL', 'Numerical Methods'];
-const interests = ['Fluid Simulation', 'Rendering', 'Applied Mathematics', 'Cycling'];
+const researchAreas = [
+  {
+    index: '01',
+    title: 'Real-time rendering',
+    description:
+      'Rasterization, shading, visibility, and performance-conscious pipelines that turn graphics algorithms into responsive visual systems.',
+  },
+  {
+    index: '02',
+    title: 'Physical simulation',
+    description:
+      'Numerical methods for fluids and other dynamic systems, with an emphasis on correctness, stability, and interactive inspection.',
+  },
+  {
+    index: '03',
+    title: 'Graphics systems',
+    description:
+      'Engine architecture, asynchronous workflows, and low-level C++ systems designed to keep complex graphics tools fast and dependable.',
+  },
+];
+
+const projects = [
+  {
+    period: 'Fall 2026',
+    title: '2D Incompressible Fluid Solver',
+    href: '/demo/mini-fluid/',
+    place: 'C++ · SDL3 · Numerical simulation',
+    detail: 'A MAC-grid Euler solver with advection, pressure projection, solid boundaries, and interactive diagnostic views.',
+  },
+  {
+    period: '2025 — 2026',
+    title: 'Collaborative 3D Editor Engine',
+    place: 'C++ · Godot 4 · Systems engineering',
+    detail: 'Cloud-synchronized files, asynchronous operations, conflict handling, networking, and operation-based collaboration.',
+  },
+  {
+    period: 'Spring 2025',
+    title: 'MiniRenderer',
+    href: '/demo/path-tracer/',
+    place: 'C++ · SDL3 · GLSL',
+    detail: 'A CPU rasterizer and Monte Carlo path tracer with microfacet materials, NEE, MIS, and a binned SAH BVH.',
+  },
+];
+
+const education = [
+  {
+    period: '2026 — 2028',
+    title: 'M.S. in Computer Science',
+    place: 'University of Southern California',
+    detail: 'Fluid simulation, rendering, graphics systems.',
+  },
+  {
+    period: '2023 — 2026',
+    title: 'M.S. in Computer Science',
+    place: 'Tsinghua University',
+    detail: 'Graphics & Geometric Computing Group; agentic scene generation, game engine development.',
+  },
+  {
+    period: '2019 — 2023',
+    title: 'B.Eng. in Architecture',
+    place: 'Tsinghua University',
+    detail: 'A spatial-design foundation that continues to inform how I think about graphics and visual systems.',
+  },
+];
+
+const publications = [
+  {
+    year: '2025',
+    title: 'The Evaluable Measurements for Interior Digital 3D Scenes',
+    venue: 'Journal of Computer-Aided Design & Computer Graphics',
+    href: 'https://doi.org/10.3724/SP.J.1089.2024-00352',
+  },
+  {
+    year: '2025',
+    title: 'SceneCluster: Interactive Scene Synthesis by Clustering Groups of Furniture Objects',
+    venue: 'IEEE Transactions on Visualization and Computer Graphics',
+    href: 'https://doi.org/10.1109/TVCG.2025.3634829',
+  },
+];
+
+const tools = ['C++', 'Python', 'GLSL', 'OpenGL', 'SDL3', 'CMake', 'Godot 4', 'Blender'];
 ---
 
-<BaseLayout title="About" description={`Profile, skills, and research interests of ${site.name}.`}>
-  <header class="page-intro about-intro">
-    <p class="eyebrow">About / Profile</p>
-    <h1>Making interesting things<br />between math and pixels.</h1>
-  </header>
-
-  <section class="about-grid">
+<BaseLayout
+  title="About"
+  description={`About ${site.name}, a graphics engineer focused on real-time rendering, physical simulation, and performance.`}
+>
+  <section class="about-profile" aria-labelledby="about-profile-title">
     <figure class="about-portrait">
-      <img src={site.portrait} alt={`Portrait placeholder for ${site.name}`} />
+      <img src={site.portrait2} alt={`Portrait of ${site.name}`} />
       <figcaption>{site.name} / {site.chineseName}</figcaption>
     </figure>
 
-    <div class="about-copy prose">
-      <p>I am a computer science student from China, currently based in Los Angeles. My recent work focuses on fluid simulation and rendering techniques, supported by a growing foundation in applied mathematics.</p>
-      <p>This website is my digital workbench: one part project archive, one part record of the ideas and decisions behind each implementation. Away from code, I enjoy PC games, cycling, and learning languages.</p>
+    <div class="about-story">
+      <p class="about-lede" id="about-profile-title">Hello, I’m Haoran — I also go by Aaron.</p>
+      <p>
+        I am a computer science graduate student at the University of Southern California. My
+        path into graphics began in architecture, then moved through computer graphics research
+        at Tsinghua University and into the rendering, simulation, and engine systems I build today.
+      </p>
+      <p>
+        I like working close to the fundamentals: implementing a rasterization pipeline from
+        scratch, tracing light with physically based materials, solving incompressible flow on a
+        grid, or finding the systems bottleneck that keeps an editor from staying responsive.
+        The common thread is turning mathematical ideas into efficient, inspectable software.
+      </p>
+      <p>
+        I am currently based in Los Angeles. Away from graphics and code, I enjoy cycling,
+        photography, PC games, and learning languages.
+      </p>
 
-      <div class="about-lists">
-        <div>
-          <h2>Toolkit</h2>
-          <ul>{skills.map((skill) => <li>{skill}</li>)}</ul>
-        </div>
-        <div>
-          <h2>Interests</h2>
-          <ul>{interests.map((interest) => <li>{interest}</li>)}</ul>
-        </div>
+      <div class="about-actions">
+        <a class="button button-primary" href={`mailto:${site.email}`}>Email me <span aria-hidden="true">↗</span></a>
+        <a class="text-link" href="https://github.com/Arcodius">GitHub <span aria-hidden="true">↗</span></a>
+        <a
+          class="text-link"
+          href="/resume/haoran-zhang-resume.pdf"
+          target="_blank"
+          rel="noreferrer"
+        >Résumé <span aria-hidden="true">↗</span></a>
       </div>
+    </div>
+  </section>
 
-      <a class="button button-primary" href={`mailto:${site.email}`}>Get in touch <span aria-hidden="true">↗</span></a>
-      <p class="small-note">Replace the sample email in <code>src/data/site.ts</code> before publishing.</p>
+  <section class="about-section" aria-labelledby="research-focus">
+    <div class="about-section-heading">
+      <p class="eyebrow">Focus</p>
+      <h2 id="research-focus">What I work on</h2>
+    </div>
+    <div class="research-grid">
+      {researchAreas.map((area) => (
+        <article class="research-area">
+          <span>{area.index}</span>
+          <h3>{area.title}</h3>
+          <p>{area.description}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="about-section about-record" aria-labelledby="projects-title">
+    <div class="about-section-heading">
+      <p class="eyebrow">Selected work</p>
+      <h2 id="projects-title">Projects</h2>
+    </div>
+    <ol class="about-timeline">
+      {projects.map((item) => (
+        <li>
+          <span class="about-period">{item.period}</span>
+          <div>
+            <h3>{item.href ? <a href={item.href}>{item.title}</a> : item.title}</h3>
+            <p class="about-place">{item.place}</p>
+            <p>{item.detail}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="about-section about-record" aria-labelledby="education-title">
+    <div class="about-section-heading">
+      <p class="eyebrow">Background</p>
+      <h2 id="education-title">Education</h2>
+    </div>
+    <ol class="about-timeline">
+      {education.map((item) => (
+        <li>
+          <span class="about-period">{item.period}</span>
+          <div>
+            <h3>{item.title}</h3>
+            <p class="about-place">{item.place}</p>
+            <p>{item.detail}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="about-section about-publications" aria-labelledby="publications-title">
+    <div class="about-section-heading">
+      <p class="eyebrow">Earlier research</p>
+      <h2 id="publications-title">Publications</h2>
+    </div>
+    <ol class="publication-list">
+      {publications.map((publication) => (
+        <li>
+          <span>{publication.year}</span>
+          <div>
+            <h3><a href={publication.href}>{publication.title}</a></h3>
+            <p>{publication.venue}</p>
+          </div>
+          <a class="publication-link" href={publication.href} aria-label={`Open ${publication.title}`}>
+            DOI <span aria-hidden="true">↗</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="about-section about-details" aria-labelledby="details-title">
+    <div class="about-section-heading">
+      <p class="eyebrow">Details</p>
+      <h2 id="details-title">Toolkit & Recognition</h2>
+    </div>
+    <div class="about-detail-grid">
+      <div>
+        <h3>Selected tools</h3>
+        <ul class="about-tag-list">
+          {tools.map((tool) => <li>{tool}</li>)}
+        </ul>
+      </div>
+      <div>
+        <h3>Recognition</h3>
+        <ul class="recognition-list">
+          <li><span>2024</span> Best Paper Award, CSIAM GDC</li>
+          <li><span>2025</span> Tsinghua Friends — Bosch Elite Scholarship</li>
+          <li><span>2024</span> Tsinghua Friends — Changchun Elite Scholarship</li>
+          <li><span>2023</span> Outstanding Graduation Design Nomination</li>
+        </ul>
+      </div>
     </div>
   </section>
 </BaseLayout>
-

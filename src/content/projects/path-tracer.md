@@ -1,26 +1,31 @@
 ---
-title: "Path Tracing Studies"
-summary: "A series of small scenes for understanding ray intersections, material sampling, and Monte Carlo integration."
-year: 2026
+title: "Mini Path Tracing Renderer"
+summary: "A series of experiments exploring path tracing and rendering techniques."
+year: 2025
 status: "in-progress"
 tags: ["Rendering", "C++", "Monte Carlo"]
-cover: "/images/projects/path-tracer.svg"
-coverAlt: "A blue sphere, yellow rays, and red geometry on a black background"
+cover: "/images/projects/mini-renderer/reflection.png"
+coverAlt: "A scene with surreal reflection effects"
 featured: true
 links: []
 ---
 
-## Starting with a single ray
+## Starting with a Single Ray
 
-This is a progressive series of path tracing experiments. I began with a basic camera and sphere intersections, then gradually added materials, direct lighting, and multiple bounces.
+This is an evolving series of path-tracing experiments. I began with a basic camera and ray–sphere intersections, then gradually added materials, direct lighting, and multiple bounces. Following [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html), I implemented my own CPU-based renderer in C++.
 
-![Geometric diagram for the path tracing study](/images/projects/path-tracer-detail.svg)
+![Ray tracing from scratch](/images/projects/mini-renderer/raytrace.bmp)
 
-## Learning path
+## Refactoring the Renderer
 
-1. Build a testable geometry-intersection layer.
-2. Decouple BSDF sampling from scene geometry.
-3. Add next-event estimation to reduce variance in direct lighting.
-4. Record the relationship between sample count, noise, and render time.
+I later began refactoring the project to improve performance and turn it into a flexible playground for rendering algorithms. That work is still in progress, but the renderer can already produce compelling images with nuanced lighting and surface detail.
 
-The final goal is not a feature-complete renderer, but a clear account of where each estimator comes from and how it is biased.
+![Cornell Box...without a Ceiling Light](/images/projects/mini-renderer/raytrace.jpg)
+
+Some of the unexpected effects are interesting in their own right.
+
+![Surreal reflections](/images/projects/mini-renderer/reflection.jpg)
+
+## Next Steps
+
+My current goal is to port the renderer to the GPU. Fight on!

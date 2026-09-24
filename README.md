@@ -88,6 +88,8 @@ $$
 title: "项目名称"
 summary: "一句话介绍项目。"
 year: 2026
+startDate: 2026-02-01
+endDate: 2026-05-31
 status: "in-progress"
 tags: ["C++", "OpenGL"]
 cover: "/images/projects/my-project.webp"
@@ -106,6 +108,7 @@ links:
 ```
 
 - `status` 只能是 `completed`、`in-progress` 或 `archived`。
+- `startDate` 和 `endDate` 是可选的精确时间。项目会优先按 `endDate`、其次按 `startDate` 排序；例如上面的项目会显示为 `Feb–May 2026`。只有开始月份时可以省略 `endDate`。若两者都省略，则继续显示并按 `year` 排序。
 - `featured: true` 会让项目出现在首页精选区；首页最多显示两个。
 - GIF 和普通图片的写法相同。建议在保证清晰度的前提下压缩文件，较长动画优先使用 WebM/MP4。
 
@@ -139,6 +142,7 @@ public/
 
 - 照片和项目截图优先使用 WebP，线条图和图标可使用 SVG。
 - 首页个人照片比例为 4:5；Demo 封面比例为 3:2。
+- Markdown 正文中的小图片会保持原始尺寸，不再被放大；大图片会自动缩小到正文宽度以内，并限制最大高度且保持比例，不需要逐张添加样式。
 - 每张图都应该有准确的 `alt` / `coverAlt`，不要写“图片”，而是说清图中有什么。
 - `public/` 中的文件会被原样复制，路径从 `/` 开始，例如 `public/images/a.webp` 在 Markdown 中写作 `/images/a.webp`。
 

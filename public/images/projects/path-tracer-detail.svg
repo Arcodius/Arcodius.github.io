@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 700" role="img" aria-labelledby="title desc">
+  <title id="title">Monte Carlo path diagram</title>
+  <desc id="desc">A diagram showing light paths bouncing between geometric surfaces.</desc>
+  <rect width="1400" height="700" fill="#d9d5ca"/>
+  <path d="M0 530h1400v170H0z" fill="#244fc6"/>
+  <path d="M1020 0h380v700h-380z" fill="#e5422b"/>
+  <circle cx="550" cy="420" r="165" fill="#151515"/>
+  <rect x="110" y="100" width="240" height="96" fill="#f1ca3a"/>
+  <g fill="none" stroke="#f2f0e8" stroke-width="10">
+    <path d="M230 148L476 300 550 255 762 120 1020 250"/>
+    <path d="M550 255l40 16-20-38M762 120l-13 41 42-20M1020 250l-40-18 18 40"/>
+  </g>
+  <text x="1120" y="626" transform="rotate(-90 1120 626)" fill="#151515" font-family="Arial, sans-serif" font-size="34" font-weight="700" letter-spacing="5">MONTE CARLO</text>
+</svg>
+

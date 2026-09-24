@@ -10,10 +10,9 @@ const tags = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
 ---
 
 <BaseLayout title="Blog" description="Notes on computer graphics, fluid simulation, rendering, and mathematics.">
-  <header class="page-intro">
+  <header class="page-intro page-intro-simple">
     <p class="eyebrow">Notes / Process / Ideas</p>
     <h1>Blog</h1>
-    <p>Notes on the problems I encounter in graphics, simulation, and rendering. These are not definitive tutorials, but evolving records of experiments and ideas.</p>
   </header>
 
   <div class="filter-line" aria-label="Article tags">

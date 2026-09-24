@@ -1,4 +1,6 @@
 ---
+import { formatProjectPeriod } from '../utils/projects';
+
 interface Props {
   project: {
     id: string;
@@ -6,6 +8,8 @@ interface Props {
       title: string;
       summary: string;
       year: number;
+      startDate?: Date;
+      endDate?: Date;
       tags: string[];
       cover: string;
       coverAlt: string;
@@ -21,6 +25,7 @@ const statusLabels = {
   'in-progress': 'In progress',
   archived: 'Archived',
 };
+const projectPeriod = formatProjectPeriod(project.data);
 ---
 
 <article class="project-card">
@@ -30,7 +35,7 @@ const statusLabels = {
   </a>
   <div class="project-body">
     <div class="project-meta">
-      <span>{project.data.year}</span>
+      <span>{projectPeriod}</span>
       <span>{statusLabels[project.data.status]}</span>
     </div>
     <h3><a href={`/demo/${project.id}/`}>{project.data.title}</a></h3>

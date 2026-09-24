@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">Path tracing study</title>
+  <desc id="desc">Geometric objects and yellow ray paths arranged on a black field.</desc>
+  <rect width="1200" height="760" fill="#151515"/>
+  <rect x="90" y="88" width="405" height="512" fill="#244fc6"/>
+  <circle cx="760" cy="405" r="190" fill="#d9d5ca"/>
+  <path d="M940 98l170 502H770z" fill="#e5422b"/>
+  <g fill="none" stroke="#f1ca3a" stroke-width="13">
+    <path d="M42 690L314 212l446 193 300-312"/>
+    <path d="M760 405l340 190M760 405l-432 250"/>
+  </g>
+  <g fill="#f1ca3a">
+    <circle cx="314" cy="212" r="19"/><circle cx="760" cy="405" r="19"/><circle cx="1060" cy="93" r="19"/>
+  </g>
+  <rect x="76" y="622" width="296" height="70" fill="#f2f0e8"/>
+  <text x="105" y="668" fill="#151515" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="3">RENDER / 02</text>
+</svg>
+

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 700" role="img" aria-labelledby="title desc">
+  <title id="title">Velocity field diagram</title>
+  <desc id="desc">A constructivist diagram of a gridded velocity field and pressure projection.</desc>
+  <rect width="1400" height="700" fill="#101010"/>
+  <g stroke="#3a3a3a" stroke-width="2">
+    <path d="M100 0v700M200 0v700M300 0v700M400 0v700M500 0v700M600 0v700M700 0v700M800 0v700M900 0v700M1000 0v700M1100 0v700M1200 0v700M1300 0v700"/>
+    <path d="M0 100h1400M0 200h1400M0 300h1400M0 400h1400M0 500h1400M0 600h1400"/>
+  </g>
+  <g stroke="#f2f0e8" stroke-width="8" fill="none">
+    <path d="M102 604l120-74 142 18 118-134 148 20 115-145 152 24 118-120 170 18"/>
+    <path d="M1158 198l37 17-18-38"/>
+  </g>
+  <rect x="85" y="70" width="350" height="112" fill="#244fc6"/>
+  <text x="125" y="142" fill="#fff" font-family="Arial, sans-serif" font-size="40" font-weight="700">VELOCITY FIELD</text>
+  <circle cx="980" cy="480" r="112" fill="#e5422b"/>
+  <circle cx="1160" cy="480" r="60" fill="#f1ca3a"/>
+</svg>
+

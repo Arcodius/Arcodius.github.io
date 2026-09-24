@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-labelledby="title desc">
+  <title id="title">Profile photo placeholder</title>
+  <desc id="desc">A geometric placeholder marked AZ. Replace this file with a real portrait.</desc>
+  <rect width="800" height="1000" fill="#151515"/>
+  <path d="M0 0h310L0 310z" fill="#e5422b"/>
+  <path d="M800 620v380H420z" fill="#244fc6"/>
+  <circle cx="586" cy="250" r="112" fill="#f1ca3a"/>
+  <path d="M145 655h335v48H145zM145 755h510v48H145z" fill="#f2f0e8"/>
+  <text x="132" y="560" fill="#f2f0e8" font-family="Arial, Helvetica, sans-serif" font-size="188" font-weight="700" letter-spacing="-16">AZ</text>
+  <text x="145" y="890" fill="#f2f0e8" font-family="Arial, Helvetica, sans-serif" font-size="28" letter-spacing="5">REPLACE WITH YOUR PHOTO</text>
+</svg>
+
