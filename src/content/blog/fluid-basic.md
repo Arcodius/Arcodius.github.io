@@ -77,4 +77,37 @@ $$
 4. Correct velocity with the pressure gradient to obtain $\mathbf{u}^{n+1}$.
 5. Advect other attributes, such as density, with the new velocity.
 
-> This note will continue to evolve alongside the implementation. The next steps are to document boundary conditions, analyze convergence of the Poisson solver, and visualize numerical dissipation.
+In this \href{https://arcodius.github.io/demo/mini-fluid/}{page}, you may find the basic implementation result of a 2D fluid solver!
+
+## 3D Fluid Solver
+
+A 3D solver is basically the same as a 2D solver, except for some engineering details, where we need to process one additional dimension. For example, when advecting the velocity, we need to carefully deal with the MAC grid coordinates and apply offset of half grid in the right place. Scalar fields like density and temperature are similarly implemented.
+
+'''cpp
+// X axis: advection of velocity in field u
+for (int k = 0; k < nz_; ++k){
+        for (int j = 0; j < ny_; ++j) {
+            for (int i = 0; i <= nx_; ++i) {
+                const float x = i * h_;
+                const float y = (j + 0.5f) * h_;
+                const float z = (k + 0.5f) * h_;
+
+                const Vec3 vel = macgrid.sampleVelocity(x, y, z);
+
+                const float dep_x = x - dt * vel.x;
+                const float dep_y = y - dt * vel.y;
+                const float dep_z = z - dt * vel.z;
+
+                const float u_i = dep_x * inv_h;
+                const float u_j = dep_y * inv_h - 0.5f;
+                const float u_k = dep_z * inv_h - 0.5f;
+
+                u_next_(i, j, k) = sampleTrilinear(macgrid.u(), u_i, u_j, u_k);
+            }
+        }
+    }
+'''
+
+For the basic visualization part, we may first render a slice of the volume, so we  are going to get the same result as 2D case.
+
+> This note will continue to evolve alongside the implementation. The next steps are to implement volumetric rendering module.
