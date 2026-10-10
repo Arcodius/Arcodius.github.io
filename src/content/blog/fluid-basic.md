@@ -1,113 +1,114 @@
 ---
-title: "Basic 2D Inviscid Incompressible Fluid Simulation"
-description: "Implementation notes spanning the Navier–Stokes equations, semi-Lagrangian advection, and pressure projection."
+title: "Building a 2D Incompressible Fluid Solver"
+description: "From the Euler equations to semi-Lagrangian advection and a staggered-grid pressure projection."
 pubDate: 2026-09-19
 tags: ["Fluid", "Math", "C++"]
 cover: "/images/projects/fluid-study.svg"
 coverAlt: "An abstract fluid simulation composed of blue streamlines and a red circle"
+draft: true
 ---
 
-## Governing equations
+A moving density image is easy to produce; a velocity field that satisfies incompressibility takes more care. This post develops the two numerical operations at the center of my solver: transport velocity through itself, then project the result onto a nearly divergence-free field. [Part II](./fluid-3d-cuda.md) follows the implementation into 3D and CUDA.
 
-The incompressible Navier–Stokes momentum equation is the starting point for this simulation:
+## Model and scope
 
-$$
-\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} = -\frac{1}{\rho} \nabla p + \nu \nabla^2 \mathbf{u} + \mathbf{g}
-$$
-
-An incompressible fluid cannot locally expand or contract. The divergence of velocity measures this local rate of volume change, so incompressibility requires
+For constant density $\rho$, the incompressible Navier–Stokes equations are
 
 $$
-\nabla \cdot \mathbf{u} = 0.
+\frac{\partial\mathbf{u}}{\partial t}+(\mathbf{u}\cdot\nabla)\mathbf{u}
+=-\frac{1}{\rho}\nabla p+\nu\nabla^2\mathbf{u}+\mathbf{f},
+\qquad \nabla\cdot\mathbf{u}=0.
 $$
 
-This does **not** imply $(\mathbf{u} \cdot \nabla) \mathbf{u} = 0$. To simplify the problem, first ignore viscosity ($\nu = 0$) and external forces such as gravity. The equation becomes
+Here $\mathbf{u}$ is velocity, $p$ is pressure, $\nu$ is kinematic viscosity, and $\mathbf{f}$ is acceleration from external forces. In the basic inviscid model I omit viscosity ($\nu=0$) and simulate transport plus pressure projection. Setting $\nabla\cdot\mathbf{u}=0$ says that the field has no local net outflow; it does **not** remove the nonlinear advection term $(\mathbf{u}\cdot\nabla)\mathbf{u}$. A source may prescribe velocity to keep the flow moving; this is distinct from implementing a general force term.
+
+The solver also transports a scalar density $d$:
 
 $$
-\frac{\partial \mathbf{u}}{\partial t} =
-\underbrace{- (\mathbf{u} \cdot \nabla) \mathbf{u}}_{\text{advection}}
-\overbrace{-\frac{1}{\rho} \nabla p}^{\text{pressure}}.
+\frac{\partial d}{\partial t}+\mathbf{u}\cdot\nabla d=0.
 $$
 
-It can be solved one stage at a time with operator splitting.
+This density makes the flow visible. In this model it is a passive tracer: it does not feed back into momentum. In particular, the current implementation is not a temperature-driven or buoyant smoke solver.
 
-## Discretization
+## Where values live: the MAC grid
 
-First, temporarily ignore pressure and solve the advection term:
-
-$$
-\frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} = 0.
-$$
-
-Advecting the velocity field produces an intermediate velocity:
+On a uniform grid with spacing $h$, pressure and density sit at cell centers. Horizontal velocity $u$ sits on vertical cell faces, while vertical velocity $v$ sits on horizontal faces. For a cell $(i,j)$, the discrete divergence is the net face flux divided by $h$:
 
 $$
-\mathbf{u}^* = \operatorname{Advect}(\mathbf{u}^n, \mathbf{u}^n, \Delta t).
+(D\mathbf{u})_{i,j}=
+\frac{u_{i+1,j}-u_{i,j}}{h}
++\frac{v_{i,j+1}-v_{i,j}}{h}.
 $$
 
-In a semi-Lagrangian solver, we trace backward from the current position:
+Pressure differences act on the **same faces**:
 
 $$
-\mathbf{x}_{\text{old}} = \mathbf{x} - \Delta t\, \mathbf{u}^n(\mathbf{x}),
+u_{i,j}\leftarrow u_{i,j}-\frac{\Delta t}{\rho h}(p_{i,j}-p_{i-1,j}),
+\qquad
+v_{i,j}\leftarrow v_{i,j}-\frac{\Delta t}{\rho h}(p_{i,j}-p_{i,j-1}).
 $$
 
-Then sample the velocity at the previous position:
+These two discrete operators fit together: the pressure correction changes precisely the fluxes measured by divergence. The grids therefore have different sizes: for $N_x\times N_y$ cells, $u$ has $(N_x+1)\times N_y$ values, $v$ has $N_x\times(N_y+1)$, and pressure has $N_x\times N_y$.
+
+## Stage 1: trace backward to advect velocity
+
+For each velocity face at position $\mathbf{x}$, sample the **old** velocity field to estimate where the fluid came from:
 
 $$
-\mathbf{u}^*(\mathbf{x}) = \mathbf{u}^n(\mathbf{x}_{\text{old}}).
+\mathbf{x}_{\mathrm{dep}}=\mathbf{x}-\Delta t\,\mathbf{u}^n(\mathbf{x}),
+\qquad
+\mathbf{u}^{*}(\mathbf{x})\approx\mathbf{u}^n(\mathbf{x}_{\mathrm{dep}}).
 $$
 
-After advection, the velocity field is no longer divergence-free, so it must be corrected with pressure:
+Because the two components live at different positions, the vector $\mathbf{u}^n(\mathbf{x})$ first needs interpolation from both staggered grids. The transported component is then sampled from **its own** grid at the departure point. Reading from the old grids and writing to separate grids prevents updated values from contaminating other samples.
+
+The implementation uses a single backward Euler trace and linear interpolation. This semi-Lagrangian step tolerates large displacements without the usual explicit-advection instability, but interpolation smooths small features. It is not an accuracy guarantee for an arbitrarily large $\Delta t$. Coordinates falling outside the sampled array are clamped to its edge in the current CUDA implementation; boundary faces are subsequently corrected.
+
+## Stage 2: pressure projection
+
+Advection and source injection generally leave an intermediate velocity $\mathbf{u}^{*}$ with nonzero divergence. Correct it by subtracting a pressure gradient:
 
 $$
-\mathbf{u}^{n+1} = \mathbf{u}^* - \frac{\Delta t}{\rho}\nabla p.
+\mathbf{u}^{n+1}=\mathbf{u}^{*}-\frac{\Delta t}{\rho}\nabla p.
 $$
 
-Substituting the incompressibility condition $\nabla \cdot \mathbf{u}^{n+1} = 0$ gives the pressure Poisson equation:
+Taking divergence and requiring $\nabla\cdot\mathbf{u}^{n+1}=0$ yields
 
 $$
-\nabla^2 p = \frac{\rho}{\Delta t}\nabla \cdot \mathbf{u}^*.
+\nabla^2p=\frac{\rho}{\Delta t}\nabla\cdot\mathbf{u}^{*}.
 $$
 
-## Implementation sequence
+The discrete version uses the face-flux divergence $D$ and cell-pressure gradient $G$: $DGp=(\rho/\Delta t)D\mathbf{u}^{*}$. At an interior 2D cell, the standard five-point stencil gives
 
-1. Advect velocity to obtain $\mathbf{u}^*$.
-2. Compute the divergence of the intermediate velocity field.
-3. Solve the pressure Poisson equation to obtain $p$.
-4. Correct velocity with the pressure gradient to obtain $\mathbf{u}^{n+1}$.
-5. Advect other attributes, such as density, with the new velocity.
+$$
+p_{i,j}^{(k+1)}=
+\frac{p_{i-1,j}^{(k)}+p_{i+1,j}^{(k)}+p_{i,j-1}^{(k)}+p_{i,j+1}^{(k)}
+-h^2(\rho/\Delta t)(D\mathbf{u}^{*})_{i,j}}{4}.
+$$
 
-In this \href{https://arcodius.github.io/demo/mini-fluid/}{page}, you may find the basic implementation result of a 2D fluid solver!
+This is one Jacobi iteration, not a complete pressure solve. A finite iteration count leaves a residual, so the projected velocity is only **approximately** divergence-free. For a closed box, the normal component of velocity at domain walls is zero. The pressure update must use a compatible zero-normal-gradient condition there; conceptually, a missing neighbor copies the boundary cell pressure. Pressure is defined only up to an additive constant. This does not affect its gradient.
 
-## 3D Fluid Solver
+In compact form, the central steps are:
 
-A 3D solver is basically the same as a 2D solver, except for some engineering details, where we need to process one additional dimension. For example, when advecting the velocity, we need to carefully deal with the MAC grid coordinates and apply offset of half grid in the right place. Scalar fields like density and temperature are similarly implemented.
+```cpp
+advectVelocity(dt);               // sample the old velocity into new grids
+injectSources();                  // if the experiment uses a source
+enforceNormalVelocityBoundary();
+computeDivergence();             // div of the intermediate velocity
+solvePressure(dt, iterations);   // iterative Poisson solve
+applyPressureGradient(dt);       // project velocity
+advectDensity(dt);               // passive scalar, using corrected velocity
+```
 
-'''cpp
-// X axis: advection of velocity in field u
-for (int k = 0; k < nz_; ++k){
-        for (int j = 0; j < ny_; ++j) {
-            for (int i = 0; i <= nx_; ++i) {
-                const float x = i * h_;
-                const float y = (j + 0.5f) * h_;
-                const float z = (k + 0.5f) * h_;
+This is explanatory pseudocode; [Part II](./fluid-3d-cuda.md) shows calls and snippets from the current 3D CUDA implementation. In particular, source injection in that code happens after velocity advection and before projection.
 
-                const Vec3 vel = macgrid.sampleVelocity(x, y, z);
+## What to check
 
-                const float dep_x = x - dt * vel.x;
-                const float dep_y = y - dt * vel.y;
-                const float dep_z = z - dt * vel.z;
+A density image alone cannot establish that projection worked. A useful diagnostic is the divergence **after** applying the pressure gradient, compared with divergence immediately before it. Record both a maximum absolute value and an RMS value over cells, along with grid size, $h$, $\Delta t$, boundary rule, and iteration count. A pressure residual, $\|DGp-(\rho/\Delta t)D\mathbf{u}^{*}\|$, additionally tells whether the iterative solve has converged. Recompute divergence after projection for this test; a stored pre-projection divergence is not that measurement.
 
-                const float u_i = dep_x * inv_h;
-                const float u_j = dep_y * inv_h - 0.5f;
-                const float u_k = dep_z * inv_h - 0.5f;
+The initial [2D demo](https://arcodius.github.io/demo/mini-fluid/) motivated this implementation. It illustrates the result, while the numerical checks above provide stronger evidence about the solver itself.
 
-                u_next_(i, j, k) = sampleTrilinear(macgrid.u(), u_i, u_j, u_k);
-            }
-        }
-    }
-'''
+## References
 
-For the basic visualization part, we may first render a slice of the volume, so we  are going to get the same result as 2D case.
-
-> This note will continue to evolve alongside the implementation. The next steps are to implement volumetric rendering module.
+- Jos Stam, [*Stable Fluids*](https://www.dgp.toronto.edu/~stam/reality/Research/pub.html), SIGGRAPH 1999.
+- Robert Bridson, [*Fluid Simulation for Computer Animation* course notes](https://www.cs.ubc.ca/~rbridson/fluidsimulation/), SIGGRAPH 2007.
