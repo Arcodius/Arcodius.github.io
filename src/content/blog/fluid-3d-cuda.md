@@ -3,9 +3,9 @@ title: "From a 3D MAC Grid to a CUDA Fluid Solver"
 description: "Staggered-grid sampling, Jacobi pressure projection, GPU data flow, and an initial profile."
 pubDate: 2026-10-09
 tags: ["Fluid", "CUDA", "C++", "Performance"]
-cover: "/images/projects/fluid-study.svg"
-coverAlt: "An abstract fluid simulation composed of blue streamlines and a red circle"
-draft: true
+# cover: "/images/projects/fluid-study.svg"
+# coverAlt: "An abstract fluid simulation composed of blue streamlines and a red circle"
+# draft: true
 ---
 
 [Part I](./fluid-2d-principles.md) derived advection and pressure projection in 2D. Extending the equations to 3D is straightforward; implementing the extra velocity component, staggered coordinates, boundary faces, and repeated GPU pressure iterations is the interesting part. This post describes the current **inviscid, constant-density** CUDA solver, rather than features planned for later.

@@ -3,9 +3,9 @@ title: "Building a 2D Incompressible Fluid Solver"
 description: "From the Euler equations to semi-Lagrangian advection and a staggered-grid pressure projection."
 pubDate: 2026-09-19
 tags: ["Fluid", "Math", "C++"]
-cover: "/images/projects/fluid-study.svg"
-coverAlt: "An abstract fluid simulation composed of blue streamlines and a red circle"
-draft: true
+# cover: "/images/projects/fluid-study.svg"
+# coverAlt: "An abstract fluid simulation composed of blue streamlines and a red circle"
+# draft: true
 ---
 
 A moving density image is easy to produce; a velocity field that satisfies incompressibility takes more care. This post develops the two numerical operations at the center of my solver: transport velocity through itself, then project the result onto a nearly divergence-free field. [Part II](./fluid-3d-cuda.md) follows the implementation into 3D and CUDA.
