@@ -936,10 +936,23 @@ button:focus-visible {
   max-width: 100%;
   height: auto;
   max-height: 38rem;
-  margin: 2.5rem auto;
+  margin: 0 auto;
   object-fit: contain;
   border: 2px solid var(--line);
   background: #ddd9ce;
+}
+
+.prose figure.markdown-figure {
+  margin: 2.5rem 0;
+  text-align: center;
+}
+
+.prose figure.markdown-figure figcaption {
+  margin-top: 0.75rem;
+  color: var(--muted);
+  font-family: var(--sans);
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
 .prose video {

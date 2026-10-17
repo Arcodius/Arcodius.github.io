@@ -29,3 +29,7 @@ The solver stores velocity on a staggered MAC grid and advects velocity and dye 
 ![Slices of 3D fluid density](/images/blogs/fluid_slices.png)
 
 On a 64 × 64 × 32 grid, preliminary measurements put the CUDA simulation step at 2.84 ms versus 126.15 ms for the CPU version—approximately **44× faster**.
+
+To visualize our result, we need to create volumetric renderer for the smoke, as well as a camera which generates ray at every pixel direction. By building the rendering kernel on CUDA, our program can smoothly simulate a smoke plume on a grid of size 128.
+
+![First Volumetric Rendering](/images/projects/mini-fluid/fluid-3d.png)
